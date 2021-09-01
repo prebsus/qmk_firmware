@@ -32,7 +32,6 @@ OPT_DEFS = -O2
 #   comment out to disable the options.
 #
 LTO_ENABLE = no
-BACKLIGHT_ENABLE = no
 MAGIC_ENABLE = yes
 MAGIC_KEYCODE_ENABLE = yes
 BOOTMAGIC_ENABLE = full 	# Virtual DIP switch configuration
@@ -48,10 +47,12 @@ SERIAL_LINK_ENABLE = no
 WAIT_FOR_USB = no
 DIP_SWITCH_ENABLE = yes
 
-# Custom RGB matrix handling
-LED_MATRIX_ENABLE = yes
-LED_MATRIX_DRIVER = custom
+# Custom Key and LED matrix handling
 CUSTOM_MATRIX = yes
+BACKLIGHT_ENABLE = yes
+BACKLIGHT_DRIVER = custom
+#LED_MATRIX_ENABLE = yes
+#LED_MATRIX_DRIVER = custom
 
 # Reduce code size
 USE_PROCESS_STACKSIZE = 0x1E0

@@ -20,13 +20,12 @@
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0x05AC
-#define PRODUCT_ID      0x024F
-#define DEVICE_VER      0x0001
+#define VENDOR_ID                   0x05AC
+#define PRODUCT_ID                  0x024F
+#define DEVICE_VER                  0x0001
 
-#define MANUFACTURER    Keychron
-#define PRODUCT         "Keychron C1"
-#define DESCRIPTION     "C1 White"
+#define MANUFACTURER                Keychron
+#define PRODUCT                     c1 white
 
 /* key matrix size */
 #define MATRIX_ROWS                 6
@@ -35,7 +34,7 @@
 #define SN32_MATRIX_READ_COLS
 #define DIODE_DIRECTION             COL2ROW
 
-#define MATRIX_COL_PINS             { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, D0}
+#define MATRIX_COL_PINS             { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, D0 }
 #define MATRIX_ROW_PINS             { C3, C4, C5, C6, C7, C8 }
 
 /* LED matrix */
@@ -45,25 +44,25 @@
 #define LED_MATRIX_ROW_PINS         { C0, C1, C2, D4, C9, C10 }
 
 #define LED_MATRIX_COLS             MATRIX_COLS
-#define LED_MATRIX_COL_PINS         { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, D0}
+#define LED_MATRIX_COL_PINS         { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, D0 }
 
-#define DRIVER_LED_TOTAL            (87)
+#define DRIVER_LED_TOTAL            87
 
 /* Backlight configuration */
-#define BACKLIGHT_LEVELS 8
+#define BACKLIGHT_LEVELS            8
 
 /* Connects each switch in the dip switch to the GPIO pin of the MCU */
-#define DIP_SWITCH_PINS { D7 }
+#define DIP_SWITCH_PINS             { D7 }
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
-#define DEBOUNCE 0
+#define DEBOUNCE                    0
 
 /* LED Status indicators */
-#define LED_CAPS_LOCK_PIN   B3
-#define LED_PIN_ON_STATE    1
+#define LED_CAPS_LOCK_PIN           B3
+#define LED_PIN_ON_STATE            1
 
-#define LED_MAC_PIN         B4
-#define LED_WIN_PIN         B5
+#define LED_MAC_PIN                 B4
+#define LED_WIN_PIN                 B5
 
 /* Enable NKRO by default */ 
 #define FORCE_NKRO

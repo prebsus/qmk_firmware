@@ -93,13 +93,15 @@ matrix_row_t matrix[MATRIX_ROWS]; //debounced values
 static bool matrix_changed = false;
 static uint8_t current_row = 0;
 
+
+/* Led matrix driver - Work in progress */
+#if LED_MATRIX_ENABLE
+
 // TODO Currently there is not enough RAM for a LED buffer, so one value is used for all LEDs.
 
-//#define LED_STATE(row, mr) (led_state[LED_MATRIX_COLS * row + mr_offset[mr]])
-#define LED_STATE(row, mr) (led_all_value)
+#define LED_STATE(row, mr) (led_state[LED_MATRIX_COLS * row + mr_offset[mr]])
 
-//uint8_t led_state[LED_MATRIX_ROWS * LED_MATRIX_COLS];
-uint8_t led_all_value;
+uint8_t led_state[LED_MATRIX_ROWS * LED_MATRIX_COLS];
 
 static void init(void){
     // NOP
@@ -111,11 +113,12 @@ static void flush(void){
 
 static void set_value(int index, uint8_t value){
     // Not implemented
+    // TODO index to row,col position
+    led_state[0] = value;
 }
 
 static void set_value_all(uint8_t value){
-    //memset(led_state, value, sizeof(led_state));
-    led_all_value = value;
+    memset(led_state, value, sizeof(led_state));
 }
 
 const led_matrix_driver_t led_matrix_driver = {
@@ -125,6 +128,20 @@ const led_matrix_driver_t led_matrix_driver = {
     .set_value_all  = set_value_all,
 };
 
+#endif
+
+/* Uniform backlight driver */
+#if BACKLIGHT_ENABLE && !LED_MATRIX_ENABLE
+
+uint8_t led_all_value;
+
+#define LED_STATE(row, mr) (led_all_value)
+
+void backlight_set(uint8_t level) {
+    led_all_value = 255 * level / BACKLIGHT_LEVELS;
+}
+
+#endif
 
 __attribute__((weak)) void matrix_init_kb(void) { matrix_init_user(); }
 
