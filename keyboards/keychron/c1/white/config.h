@@ -25,7 +25,11 @@
 #define DEVICE_VER                  0x0001
 
 #define MANUFACTURER                Keychron
-#define PRODUCT                     c1 white
+// \x43\x31 is "C1" in ASCII hex, this is used to prevent macro expansion, because C1 is also a pin macro.
+#define PRODUCT                     Keychron \x43\x31 White
+
+#define WAIT_FOR_USB
+#define USB_MAX_POWER_CONSUMPTION   100
 
 /* key matrix size */
 #define MATRIX_ROWS                 6

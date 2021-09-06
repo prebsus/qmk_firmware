@@ -112,17 +112,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     }
 };
 
+// Manage Windows and Mac LEDs
+// - Show status of mode switch
+// - Turn LEDs off durring USB suspend
+bool mode_leds_show = true;
+bool mode_leds_windows;
+
+static void mode_leds_update(void){
+    writePin(LED_WIN_PIN, mode_leds_show && mode_leds_windows);
+    writePin(LED_MAC_PIN, mode_leds_show && !mode_leds_windows);
+}
+
 void dip_switch_update_user(uint8_t index, bool active){
     if(index == 0) {
         if(active) { // Mac mode
-            writePin(LED_WIN_PIN, 0);
-            writePin(LED_MAC_PIN, 1);
             layer_move(2);
         } else { // Windows mode
-            writePin(LED_WIN_PIN, 1);
-            writePin(LED_MAC_PIN, 0);
             layer_move(0);
         }
+
+        // Update mode and update leds
+        mode_leds_windows = !active;
+        mode_leds_update();
     }
 }
 
@@ -130,4 +141,15 @@ void keyboard_pre_init_user(void) {
     // Setup Win & Mac LED Pins as output
     setPinOutput(LED_WIN_PIN);
     setPinOutput(LED_MAC_PIN);
+}
+
+void suspend_power_down_user(void) {
+    // Turn leds off
+    mode_leds_show = false;
+    mode_leds_update();
+}
+
+void suspend_wakeup_init_user(void) {
+    mode_leds_show = true;
+    mode_leds_update();
 }
