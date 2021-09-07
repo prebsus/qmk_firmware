@@ -23,9 +23,9 @@
 #define PRODUCT_ID      0x5004
 #define DEVICE_VER      0x0001
 
-#define MANUFACTURER    Redragon
-#define PRODUCT         K530
-#define DESCRIPTION     K530 Draconic
+#define MANUFACTURER    Friendly Foes Foundry
+#define PRODUCT         FFC61
+#define DESCRIPTION     FFC61 Friendly Foes Foundry
 
 /* key matrix size */
 #define MATRIX_ROWS 5
@@ -34,13 +34,10 @@
 #define DIODE_DIRECTION COL2ROW
 
 #define MATRIX_COL_PINS { A8, A9, A10, A11, A12, A13, A14, A15, B0, B1, B2, B3, B4, B5 }
-#define MATRIX_ROW_PINS { D7, D6, D5, D4, D3 }
+#define MATRIX_ROW_PINS { D11, D10, D9, D8, D7 }
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
 #define DEBOUNCE 5
-
-/* Per-key tapping term, for use with Magic FN */
-#define TAPPING_TERM_PER_KEY
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 //#define LOCKING_SUPPORT_ENABLE

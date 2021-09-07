@@ -19,32 +19,36 @@
 #include "config_common.h"
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0x0C45
-#define PRODUCT_ID      0x5004
-#define DEVICE_VER      0x0001
 
-#define MANUFACTURER    Redragon
-#define PRODUCT         K530
-#define DESCRIPTION     K530 Draconic
+#define VENDOR_ID       0x0C45
+#define PRODUCT_ID      0x652F
+#define DEVICE_VER      0x0001
+#define MANUFACTURER    Glorious
+#define PRODUCT         GMMK FULL
+#define DESCRIPTION     "Mechanical keyboard"
 
 /* key matrix size */
-#define MATRIX_ROWS 5
-#define MATRIX_COLS 14
+#define MATRIX_ROWS 7
+#define MATRIX_COLS 16
 
-#define DIODE_DIRECTION COL2ROW
+/* key matrix pins */
+#define MATRIX_ROW_PINS { D0, D1, D2, D3, D4, D5, D6 }
+#define MATRIX_COL_PINS { C1, C2, A0, A1, A2, A3, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15 }
+#define UNUSED_PINS
 
-#define MATRIX_COL_PINS { A8, A9, A10, A11, A12, A13, A14, A15, B0, B1, B2, B3, B4, B5 }
-#define MATRIX_ROW_PINS { D7, D6, D5, D4, D3 }
+/* COL2ROW or ROW2COL */
+#define DIODE_DIRECTION ROW2COL
+#define USB_POLLING_INTERVAL_MS 1
 
-/* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
+/* Set 0 if debouncing isn't needed */
 #define DEBOUNCE 5
 
-/* Per-key tapping term, for use with Magic FN */
-#define TAPPING_TERM_PER_KEY
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION
 
-/* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
-//#define LOCKING_SUPPORT_ENABLE
-/* Locking resynchronize hack */
-//#define LOCKING_RESYNC_ENABLE
+#define NO_DEBUG 1
+#define NO_PRINT 1
+
+/* TODO: use some real random low cost solution, call rand() will crash for the reduced stack size... */
 
 #include "config_led.h"
