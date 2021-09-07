@@ -156,21 +156,12 @@ inline matrix_row_t matrix_get_row(uint8_t row) { return matrix[row]; }
 void matrix_print(void) {}
 
 static void init_pins(void) {
-#ifdef SN32_MATRIX_READ_ROWS
-    //  Unselect ROWs
-    for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
-        setPinInput(row_pins[x]);
-        writePinHigh(row_pins[x]);
-    }
-#endif
 
-#ifdef SN32_MATRIX_READ_COLS
+#if(DIODE_DIRECTION == ROW2COL)
     //  Unselect ROWs
     for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
-        setPinOutput(row_pins[x]);
-        writePinHigh(row_pins[x]);
+        setPinInputHigh(row_pins[x]);
     }
-#endif
 
     // Unselect COLs
     for (uint8_t x = 0; x < MATRIX_COLS; x++) {
@@ -178,10 +169,31 @@ static void init_pins(void) {
         writePinHigh(col_pins[x]);
     }
 
-   for (uint8_t x = 0; x < LED_MATRIX_ROWS_HW; x++) {
+#elif(DIODE_DIRECTION == COL2ROW)
+    //  Unselect ROWs
+    for (uint8_t x = 0; x < MATRIX_ROWS; x++) {
+        setPinOutput(row_pins[x]);
+        writePinHigh(row_pins[x]);
+    }
+
+    // Unselect COLs
+    for (uint8_t x = 0; x < MATRIX_COLS; x++) {
+        setPinInputHigh(col_pins[x]);
+    }
+#else
+#error DIODE_DIRECTION must be one of COL2ROW or ROW2COL!
+#endif
+
+    // MATRIX_COL_PINS and  LED_MATRIX_COL_PINS can be the same, in that case the earlier configuration is overrule by this one.
+    for (uint8_t x = 0; x < LED_MATRIX_COLS; x++) {
+        setPinOutput(led_col_pins[x]);
+        writePinHigh(led_col_pins[x]);
+    }
+
+    for (uint8_t x = 0; x < LED_MATRIX_ROWS_HW; x++) {
         setPinOutput(led_row_pins[x]);
         writePinLow(led_row_pins[x]);
-   }
+    }
 }
 
 void matrix_init(void) {
@@ -352,21 +364,21 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
 
     chSysDisable();
 
-    // Disable PWM outputs on column pins
-    SN_CT16B1->PWMIOENB = 0;
-
     // Clear match interrupt status
     SN_CT16B1->IC = mskCT16_MR23IC; 
 
     // Turn the selected row off
     writePinLow(led_row_pins[current_row]);
 
+    // Disable PWM outputs on column pins
+    SN_CT16B1->PWMIOENB = 0;
+
     // Move to the next row
     current_row = (current_row + 1) % LED_MATRIX_ROWS_HW;
 
-#ifdef SN32_MATRIX_READ_ROWS
-    if(current_row == 0)
-    {
+    if(current_row == 0) {
+
+#if(DIODE_DIRECTION == ROW2COL)
         // Read the key matrix
         for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
             // Enable the column
@@ -386,15 +398,11 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
             // Disable the column
             writePinHigh(col_pins[col_index]);
         }
-    }
-#endif
 
-#ifdef SN32_MATRIX_READ_COLS
-    if(current_row == 0)
-    {
-        // Set all column pins input high
-        for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
-            setPinInputHigh(col_pins[col_index]);
+#elif(DIODE_DIRECTION == COL2ROW)
+        // MATRIX_COL_PINS and LED_MATRIX_COL_PINS can be the same. So configure MATRIX_COL_PINS as input, but this might mess-up the LED_MATRIX_COL_PINS.
+        for (uint8_t x = 0; x < MATRIX_COLS; x++) {
+            setPinInputHigh(col_pins[x]);
         }
 
         // Read the key matrix
@@ -416,8 +424,16 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
             // Disable the row
             writePinHigh(row_pins[row_index]);
         }
-    }
+
+        // Done with MATRIX_COL_PINS, re-init LED_MATRIX_COL_PINS that might have been messed-up.
+        for (uint8_t x = 0; x < LED_MATRIX_COLS; x++) {
+            setPinOutput(led_col_pins[x]);
+            writePinHigh(led_col_pins[x]);
+        }
+
 #endif
+
+    }
 
     //Set CT16B1 as the up-counting mode.
     SN_CT16B1->TMRCTRL = (mskCT16_CRST);

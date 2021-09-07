@@ -35,7 +35,6 @@
 #define MATRIX_ROWS                 6
 #define MATRIX_COLS                 17
 
-#define SN32_MATRIX_READ_COLS
 #define DIODE_DIRECTION             COL2ROW
 
 #define MATRIX_COL_PINS             { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, D0 }
