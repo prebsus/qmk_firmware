@@ -1,5 +1,6 @@
 # project specific files
 SRC = matrix.c
+SRC += config_led.c
 
 ## chip/board settings
 # - the next two should match the directories in
@@ -29,6 +30,7 @@ ARMV = 6
 # BOOTLOADER = flash
 SN32_BOOTLOADER_ADDRESS = 0x1FFF0009
 
+# TODO: Switch to -Os, so there is space for all paterns, but for now its not used because it crashes
 OPT_DEFS = -O2
 
 # Build Options
@@ -43,13 +45,19 @@ DIP_SWITCH_ENABLE = yes
 
 # Custom Key and LED matrix handling
 CUSTOM_MATRIX = yes
-BACKLIGHT_ENABLE = yes
-BACKLIGHT_DRIVER = custom
+#BACKLIGHT_ENABLE = yes
+#BACKLIGHT_DRIVER = custom
 #LED_MATRIX_ENABLE = yes
 #LED_MATRIX_DRIVER = custom
+RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = custom
+
+# some options to reduce ram usage
+LDFLAGS += --specs=nano.specs
+OPT_DEFS += -DCORTEX_ENABLE_WFI_IDLE=TRUE
+USE_LINK_GC = yes
+LTO_ENABLE = yes
 
 # Reduce code size
 USE_PROCESS_STACKSIZE = 0x1E0
 USE_EXCEPTIONS_STACKSIZE = 0x180
-
-COMPILEFLAGS += --specs=nano.specs

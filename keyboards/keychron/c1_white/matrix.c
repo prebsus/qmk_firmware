@@ -30,7 +30,14 @@ Ported to QMK by Stephen Peery <https://github.com/smp4488/>
 #include "quantum.h"
 #include "matrix.h"
 #include "debounce.h"
+
+#if LED_MATRIX_ENABLE
 #include "led_matrix.h"
+#endif
+
+#if RGB_MATRIX_ENABLE
+#include "rgb_matrix.h"
+#endif
 
 
 // TODO fix CT16.h include for SN32F260, The one found in SN32F260_Startkit_Package_V1.6R is not complete
@@ -93,11 +100,77 @@ matrix_row_t matrix[MATRIX_ROWS]; //debounced values
 static bool matrix_changed = false;
 static uint8_t current_row = 0;
 
+/* Fake RGB Led matrix driver - Work in progress */
+/* Only the red channel is used. RGB matrix is currently better supported then LED matrix */
+#if RGB_MATRIX_ENABLE
+
+uint8_t led_state[DRIVER_LED_TOTAL];
+
+#define LED_STATE(row, mr) get_led_state(row, mr)
+
+static inline int get_led_state(int row, int mr){
+    int led_id = g_led_config.matrix_co[row][mr_offset[mr]];
+    if(led_id == NO_LED) return 0;
+
+    return led_state[led_id];
+}
+
+void init(void) {
+    // NOP
+}
+
+static void flush(void){
+    // NOP
+}
+
+void set_color(int index, uint8_t r, uint8_t g, uint8_t b) {
+    led_state[index] = r;
+}
+
+static void set_color_all(uint8_t r, uint8_t g, uint8_t b) {
+    memset(led_state, r, sizeof(led_state));
+}
+
+const rgb_matrix_driver_t rgb_matrix_driver = {
+    .init          = init,
+    .flush         = flush,
+    .set_color     = set_color,
+    .set_color_all = set_color_all,
+};
+
+// Small rand() implementation
+int rand(void)
+{
+   // static unsigned int z4;
+   unsigned int z1, z2, z3, z4;
+   int r;
+   unsigned int b;
+
+   z1 = timer_read32();
+   z2 = 12345;
+   z3 = 12345;
+   z4 = z1 << 8;
+
+   b  = ((z1 << 6) ^ z1) >> 13;
+   z1 = ((z1 & 4294967294U) << 18) ^ b;
+   b  = ((z2 << 2) ^ z2) >> 27;
+   z2 = ((z2 & 4294967288U) << 2) ^ b;
+   b  = ((z3 << 13) ^ z3) >> 21;
+   z3 = ((z3 & 4294967280U) << 7) ^ b;
+   b  = ((z4 << 3) ^ z4) >> 12;
+   z4 = ((z4 & 4294967168U) << 13) ^ b;
+
+   r = z1 ^ z2 ^ z3 ^ z4;
+   // z4 = r;
+
+   return r;
+}
+
+
+#endif
 
 /* Led matrix driver - Work in progress */
 #if LED_MATRIX_ENABLE
-
-// TODO Currently there is not enough RAM for a LED buffer, so one value is used for all LEDs.
 
 #define LED_STATE(row, mr) (led_state[LED_MATRIX_COLS * row + mr_offset[mr]])
 
