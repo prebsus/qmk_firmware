@@ -150,8 +150,9 @@ void matrix_init(void) {
     // Match register used to trigger a reset, that will start a new PWM cycle
     SN_CT16B1->MR22 = 0xFFFF;
 
-    // Set prescale value
-    SN_CT16B1->PRE = 4;
+    // Set prescale value, aim for 1.2kHz. Due to overhead the actual freq will be a bit lower, but should still be above 1kHz.
+    // Tests with 12MHz and 6 rows, resulted in a scan frequency of 1.1kHz
+    SN_CT16B1->PRE = SystemCoreClock / (256 * LED_MATRIX_ROWS_HW * 1200) - 1;
 
     //Set CT16B1 as the up-counting mode.
 	SN_CT16B1->TMRCTRL = SN_CT16B0_TMRCTRL_CRST_Msk;
