@@ -4,6 +4,10 @@
 
 #define XX NO_LED
 
+// Mark keys that are black with the default keychron keycaps. 
+// This is used but the custom rgb matrix effect to create a high contrast mode that only lights up black keys. To make them better readable.
+#define B (128 | 4)
+
 /// Force g_led_config into flash, because there is no space in RAM.
 /// This should be safe because g_led_config should never be written to.
 /// We cannot make g_led_config const, because rgb_matrix.h, exports it as mutable.
@@ -23,12 +27,12 @@ led_config_t g_led_config = { {
     {8  , 51},            {28 , 51}, {40 , 51}, {53 , 51}, {65 , 51}, {78 , 51}, {90 , 51}, {103, 51}, {115, 51}, {128, 51}, {140, 51},            {157, 51},            {187, 51},
     {2  , 64}, {17 , 64}, {33 , 64},                                  {79 , 64},                                  {124, 64}, {137, 64}, {149, 64}, {162, 64}, {174, 64}, {187, 64}, {199, 64},
 }, {
-   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,    4, 4, 4,
-   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,    4,
-   4,    4, 4, 4, 4, 4, 4, 4, 4, 4, 4,    4,    4,
-   4, 4, 4,          4,          4, 4, 4, 4, 4, 4, 4
+   B,    4, 4, 4, 4, B, B, B, B, 4, 4, 4, 4, B, B, B,
+   B, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, B, B, B, B,
+   B, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, B, B, B, B,
+   B, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,    B,
+   B,    4, 4, 4, 4, 4, 4, 4, 4, 4, 4,    B,    4,
+   B, B, B,          4,          B, B, B, B, 4, 4, 4
 } };
 
 #endif
