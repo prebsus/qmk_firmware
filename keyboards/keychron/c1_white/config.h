@@ -69,3 +69,18 @@
 
 /* Enable NKRO by default */ 
 #define FORCE_NKRO
+
+/* Disable the following animation because they are not interesting in monochrome */
+#define DISABLE_RGB_MATRIX_ALPHAS_MODS
+#define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
+#define DISABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
+#define DISABLE_RGB_MATRIX_BAND_SAT
+#define DISABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
+#define DISABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+#define DISABLE_RGB_MATRIX_CYCLE_ALL
+#define DISABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
+#define DISABLE_RGB_MATRIX_DUAL_BEACON
+
+/* TODO: Disabled the following animation because they crash the keyboard. Probaly due to a to small stack */
+#define DISABLE_RGB_MATRIX_RAINDROPS
+#define DISABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
