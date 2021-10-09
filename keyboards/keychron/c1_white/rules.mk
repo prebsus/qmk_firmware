@@ -1,6 +1,7 @@
 # project specific files
 SRC = matrix.c
 SRC += config_led.c
+SRC += rand.c
 
 ## chip/board settings
 # - the next two should match the directories in
@@ -30,8 +31,8 @@ ARMV = 6
 # BOOTLOADER = flash
 SN32_BOOTLOADER_ADDRESS = 0x1FFF0009
 
-# TODO: Switch to -Os, so there is space for all paterns, but for now its not used because it crashes
-OPT_DEFS = -O2
+# Optimize for size
+OPT_DEFS = -Os
 
 # Build Options
 #   comment out to disable the options.
@@ -45,10 +46,6 @@ DIP_SWITCH_ENABLE = yes
 
 # Custom Key and LED matrix handling
 CUSTOM_MATRIX = yes
-#BACKLIGHT_ENABLE = yes
-#BACKLIGHT_DRIVER = custom
-#LED_MATRIX_ENABLE = yes
-#LED_MATRIX_DRIVER = custom
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
 

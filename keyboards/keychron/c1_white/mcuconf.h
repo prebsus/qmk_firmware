@@ -46,10 +46,6 @@
 #define SN32_HAS_GPIOC TRUE
 #define SN32_HAS_GPIOD TRUE
 
-// Disable reset and SWD, so they can be used as GPIO
-#define SN32_PAL_DISABLE_RESET  TRUE
-#define SN32_PAL_DISABLE_SWD    TRUE
-
 /*
  * USB driver system settings.
  */
@@ -57,7 +53,7 @@
 #define PLATFORM_USB_USE_USB1 TRUE
 
 /*
- * Timer driver system settings.
+ * System Clock settings.
  */
 // Defaults are correct
 

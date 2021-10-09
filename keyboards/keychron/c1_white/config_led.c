@@ -4,6 +4,10 @@
 
 #define XX NO_LED
 
+/// Force g_led_config into flash, because there is no space in RAM.
+/// This should be safe because g_led_config should never be written to.
+/// We cannot make g_led_config const, because rgb_matrix.h, exports it as mutable.
+__attribute__(( section(".rodata.g_led_config") ))
 led_config_t g_led_config = { {
   {  0, XX,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12,  13, 14, 15},
   { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,  30, 31, 32},
