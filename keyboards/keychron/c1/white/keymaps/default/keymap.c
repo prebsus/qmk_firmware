@@ -115,8 +115,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Manage Windows and Mac LEDs
 // - Show status of mode switch
 // - Turn LEDs off durring USB suspend
-bool mode_leds_show = true;
-bool mode_leds_windows;
+static bool mode_leds_show = true;
+static bool mode_leds_windows;
 
 static void mode_leds_update(void){
     writePin(LED_WIN_PIN, mode_leds_show && mode_leds_windows);
@@ -152,7 +152,7 @@ void suspend_power_down_user(void) {
     rgb_matrix_set_suspend_state(true);
 }
 
-/// TODO: Clean-up workarond
+/// TODO: Clean-up workaround
 /// Currently the suspend_wakeup_init_user() has issues. See https://github.com/SonixQMK/qmk_firmware/issues/80
 /// A workaround is to use housekeeping_task_user() instead.
 void housekeeping_task_user(void) {
