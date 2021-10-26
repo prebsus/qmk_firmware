@@ -82,6 +82,6 @@
 #define DISABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
 #define DISABLE_RGB_MATRIX_DUAL_BEACON
 
-/* TODO: Disabled the following animation because they crash the keyboard. Probaly due to a to small stack */
+/* TODO: Disabled the following animation because they crash the keyboard. Probably due to a too small stack */
 #define DISABLE_RGB_MATRIX_RAINDROPS
 #define DISABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
