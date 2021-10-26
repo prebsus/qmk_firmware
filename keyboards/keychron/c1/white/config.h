@@ -52,7 +52,8 @@
 #define DRIVER_LED_TOTAL            87
 
 /* Backlight configuration */
-#define BACKLIGHT_LEVELS            8
+#define RGB_MATRIX_VAL_STEP             32
+#define RGB_DISABLE_WHEN_USB_SUSPENDED  true
 
 /* Connects each switch in the dip switch to the GPIO pin of the MCU */
 #define DIP_SWITCH_PINS             { D7 }
