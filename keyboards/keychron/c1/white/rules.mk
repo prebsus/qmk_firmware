@@ -1,6 +1,5 @@
 # project specific files
 SRC = matrix.c
-SRC += config_led.c
 SRC += rand.c
 
 ## chip/board settings
@@ -50,7 +49,7 @@ RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
 RGB_MATRIX_CUSTOM_KB = yes
 
-# some options to reduce ram usage
+# Some options to reduce RAM usage
 LDFLAGS += --specs=nano.specs
 OPT_DEFS += -DCORTEX_ENABLE_WFI_IDLE=TRUE
 USE_LINK_GC = yes

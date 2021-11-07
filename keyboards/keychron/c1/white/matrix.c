@@ -20,7 +20,7 @@ Ported to QMK by Stephen Peery <https://github.com/smp4488/>
 
 // Key and LED matrix driver for SN32F260.
 // This driver will take full control of CT16B1 and GPIO in MATRIX_ROW_PINS, MATRIX_COL_PINS, LED_MATRIX_ROW_PINS and LED_MATRIX_COL_PINS.
-// This file implenents a RGB matrix led driver but only the red channel is used. Because the RGB matrix is currently better supported then LED matrix.
+// This file implements a RGB matrix led driver but only the red channel is used. Because the RGB matrix is currently better supported then LED matrix.
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -33,6 +33,10 @@ Ported to QMK by Stephen Peery <https://github.com/smp4488/>
 #include "matrix.h"
 #include "debounce.h"
 #include "rgb_matrix.h"
+
+#ifndef SN32_CT16B1_IRQ_PRIORITY
+#define SN32_CT16B1_IRQ_PRIORITY 0
+#endif
 
 static const pin_t row_pins[MATRIX_ROWS] = MATRIX_ROW_PINS;
 static const pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
@@ -164,7 +168,7 @@ void matrix_init(void) {
     SN_CT16B1->TMRCTRL = SN_CT16B0_TMRCTRL_CEN_Msk;
 
     NVIC_ClearPendingIRQ(CT16B1_IRQn);
-    nvicEnableVector(CT16B1_IRQn, 0);
+    nvicEnableVector(CT16B1_IRQn, SN32_CT16B1_IRQ_PRIORITY);
 }
 
 uint8_t matrix_scan(void) {
@@ -192,10 +196,7 @@ uint8_t matrix_scan(void) {
  * @isr
  */
 OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
-
     OSAL_IRQ_PROLOGUE();
-
-    chSysDisable();
 
     // Clear match interrupt status
     SN_CT16B1->IC = SN_CT16B1_IC_MR22IC_Msk | SN_CT16B1_IC_MR23IC_Msk;
@@ -213,6 +214,8 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
     if(current_row == 0) {
 
 #if(DIODE_DIRECTION == ROW2COL)
+        #warning "Untested, copied from 240 driver. Didn't have a board to test this on"
+
         // Read the key matrix
         for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++) {
             // Enable the column
@@ -239,6 +242,11 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
             // Enable the row
             writePinLow(row_pins[row_index]);
 
+            // NOTE: Small delay to let internal pull-up resitors pull-up the input pins.
+            // The input pin can still been low when the previous row had a pressed button.
+            // When transistors are replaced with FETs this is needed because thy have a high gate capacitance.
+            for(int i = 0; i < 100; i++){ __asm__ volatile("" ::: "memory");  }
+
             // When MATRIX_COL_PINS is ordered from MR0 to MRn, the following optimization is possible.
             // This if should be resolved at compile time.
             if( cols_ordered() ){
@@ -248,8 +256,11 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
                 // The bit position in col_pin_values matches MR numbering.
                 uint32_t col_pin_values = (pal_lld_readport(GPIOA) & 0xFFFF) | ((pal_lld_readport(GPIOD) & 0x3F) << 16);
 
-                // Store bottom MATRIX_COLS bits. Invert because a keypress will make a pin low.
-                raw_matrix[row_index] = ~col_pin_values & ((1 << MATRIX_COLS) - 1);
+                // Keep bottom MATRIX_COLS bits.
+                col_pin_values &= ((1 << MATRIX_COLS) - 1);
+
+                // Invert because a keypress will make a pin low.
+                raw_matrix[row_index] = ~col_pin_values;
             } else {
                 // Slow fallback implementation
 
@@ -284,8 +295,6 @@ OSAL_IRQ_HANDLER(SN32_CT16B1_HANDLER) {
 
     // Jump to just before MR22 match value, when it is reached it will trigger a reset, starting a new PWM cycle
     SN_CT16B1->TC = 0xFFFE;
-
-    chSysEnable();
 
     OSAL_IRQ_EPILOGUE();
 }
@@ -362,6 +371,8 @@ static inline void load_mrs(int row) {
     // Marco that load the MR for the given col.
     // It is a NOP if col >= LED_MATRIX_COLS
     // This gets compiled into three instruction, two ldrb and one str.
+    // When g_led_config.matrix_co contains a NO_LED (255) entry, led_state[] will be indexed out of bound.
+    // So this will load a unknown value into the MR register, but this doesn't matter because there is no led.
     #define LOAD_MR(col)  if(col < LED_MATRIX_COLS) { (*MRx)[pin_to_mr(led_col_pins[col])] = led_state[g_led_config.matrix_co[row][col]]; }
 
     // Manual unroll the loading of the MRs
