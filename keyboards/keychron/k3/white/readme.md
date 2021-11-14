@@ -1,4 +1,4 @@
-# Keychron C1 white
+# Keychron C1 white (to be updated)
 
 ![Keychron C1](https://i.imgur.com/oB9h56v.png)
 
