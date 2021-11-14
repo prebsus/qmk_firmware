@@ -1,6 +1,6 @@
 # Keychron K3 Optical Hotswap white
 
-![Keychron 31](https://imgur.com/a/BmFYenw.png)
+![Keychron 31](https://i.imgur.com/hIOm46H.png)
 
 A 75% Low-profile keyboard.
 
