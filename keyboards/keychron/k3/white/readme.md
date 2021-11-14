@@ -1,20 +1,20 @@
-# Keychron C1 white (to be updated)
+# Keychron K3 Optical Hotswap white
 
-![Keychron C1](https://i.imgur.com/oB9h56v.png)
+![Keychron 31](https://i.imgur.com/hIOm46H.png)
 
-A customizable TKL keyboard.
+A 75% Low-profile keyboard.
 
 * Keyboard Maintainer(s): [SonixQMK](https://github.com/SonixQMK), [IsaacDynamo](https://github.com/IsaacDynamo), [noldevin](https://github.com/noldevin), [vjdato21](https://github.com/vjdato21)
-* Hardware Supported: Keychron C1 white
-* Hardware Availability: [Keychron](https://www.keychron.com/products/keychron-c1-wired-mechanical-keyboard)
+* Hardware Supported: Keychron K3 Optical Hotswap white V1 (V2 MCU to be confirmed)
+* Hardware Availability: [Keychron](https://www.keychron.com/products/keychron-k3-wireless-mechanical-keyboard)
 
-# Install
+# Install (To be updated)
 1. If your keyboard currently has stock firmware installed, put your keyboard first into bootloader by shorting the boot pins found under the spacebar before plugging in your keyboard to the PC. Otherwise, press `Fn + Esc` to put your keyboard into bootloader.
 1. Download and run [Sonix Flasher](https://github.com/SonixQMK/sonix-flasher/releases/tag/v0.2.1).
 1. In Sonix Flasher, select `SN32F26x` under 'Device'. And select `0x00` as the qmk offset.
 1. Click 'Flash QMK...' and flash jumploader-keychron_c1_white.bin. This can be found in 'Pre-Compiled Jumploaders' build by the latest [Sonix keyboard bootloader action](https://github.com/SonixQMK/sonix-keyboard-bootloader/actions).
 1. In Sonix Flasher, select `SN32F26x` under 'Device'. And select `0x200` as the qmk offset.
-1. Lastly, click 'Flash QMK...' and flash keychron_c1_white_default.bin. This can be found in 'Pre-Compiled Firmware' build by the latest [Sonix QMK firmware action](https://github.com/SonixQMK/qmk_firmware/actions).
+1. Lastly, click 'Flash QMK...' and flash keychron_c3_white_default.bin. This can be found in 'Pre-Compiled Firmware' build by the latest [Sonix QMK firmware action](https://github.com/SonixQMK/qmk_firmware/actions).
 
 # Keymapping
 ### Windows Mode
