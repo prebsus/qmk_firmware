@@ -29,9 +29,15 @@ ARMV = 6
 
 # BOOTLOADER = flash
 SN32_BOOTLOADER_ADDRESS = 0x1FFF0009
+# NB! NEED TO CHECK BOOTLOADER ADDRESS
 
 # Optimize for size
 OPT_DEFS = -Os
+# NB! fixes stack size, needed for 260x chip (ref. Glory ion chat)
+
+# Define optical switches matrix 
+OPT_DEFS += -DOPTICAL_MATRIX
+# NB! (taken from K7 bringup), -D is argument, defined OPTICAL_MATRIX for keyboard
 
 # Build Options
 #   comment out to disable the options.
