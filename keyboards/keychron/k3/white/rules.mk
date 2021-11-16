@@ -33,15 +33,15 @@ SN32_BOOTLOADER_ADDRESS = 0x1FFF0009
 
 # Optimize for size
 OPT_DEFS = -Os
-# NB! fixes stack size, needed for 260x chip (ref. Glory ion chat)
+# NB! fixes stack size, needed for 260x chip (ref. Glory ion chat) - OK
 
 # Define optical switches matrix 
 OPT_DEFS += -DOPTICAL_MATRIX
-# NB! (taken from K7 bringup), -D is argument, defined OPTICAL_MATRIX for keyboard
+# NB! (taken from K7 bringup), -D is argument, defined OPTICAL_MATRIX for keyboard, references config.h - OK
 
 # Build Options
 #   comment out to disable the options.
-#
+#   NB! Need to check what I want to include here, but these seem sensible.
 MAGIC_ENABLE = yes
 MAGIC_KEYCODE_ENABLE = yes
 BOOTMAGIC_ENABLE = full 	# Virtual DIP switch configuration
@@ -50,17 +50,20 @@ NKRO_ENABLE = yes       	# USB Nkey Rollover
 DIP_SWITCH_ENABLE = yes
 
 # Custom Key and LED matrix handling
+#   NB! Need to check what I want to include here, but these seem sensible.
 CUSTOM_MATRIX = yes
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
 RGB_MATRIX_CUSTOM_KB = yes
 
 # Some options to reduce RAM usage
+#   NB! Seems specific to 26x MCU, so OK
 LDFLAGS += --specs=nano.specs
 OPT_DEFS += -DCORTEX_ENABLE_WFI_IDLE=TRUE
 USE_LINK_GC = yes
 LTO_ENABLE = yes
 
 # Reduce code size
+#   NB! Seems specific to 26x MCU, so OK
 USE_PROCESS_STACKSIZE = 0x1E0
 USE_EXCEPTIONS_STACKSIZE = 0x180

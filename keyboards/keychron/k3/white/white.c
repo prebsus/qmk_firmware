@@ -15,7 +15,8 @@
  */
 #include "white.h"
 
-// Manage Windows and Mac LEDs
+// NB! K3 doesn't have Windows and Mac LEDs, so need to remove some or most of this?
+// Manage Windows and Mac LEDs 
 // - Show status of mode switch
 // - Turn LEDs off durring USB suspend
 static bool mode_leds_show = true;
@@ -50,6 +51,7 @@ void keyboard_pre_init_kb(void) {
     keyboard_pre_init_user();
 }
 
+// NB! Not sure if I need this void block or not - looks like it's only for the LEDs on C1 that I don't have
 void suspend_power_down_kb(void) {
     // Turn leds off
     mode_leds_show = false;
@@ -61,6 +63,7 @@ void suspend_power_down_kb(void) {
     suspend_power_down_user();
 }
 
+// NB! Need to look though this, but it seems like it would still be appropriate for me
 /// TODO: Clean-up workaround
 /// Currently the suspend_wakeup_init_kb() has issues. See https://github.com/SonixQMK/qmk_firmware/issues/80
 /// A workaround is to use housekeeping_task_kb() instead.
@@ -75,6 +78,7 @@ void housekeeping_task_kb(void) {
     housekeeping_task_user();
 }
 
+// NB! I probably dion't need this one, do I? More relevant for C1 since white-on-black keys are difficult to see?
 #ifdef RGB_MATRIX_ENABLE
 
 #include "rgb_matrix.h"
